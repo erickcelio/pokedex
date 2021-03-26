@@ -7,6 +7,7 @@ export const GlobalStyle = createGlobalStyle`
     --white: #FFFFFF;
     --yellow: #FFCB05;
     --black: #000000;
+    --gray: #C4C4C4;
 
     --pokemon-color-red: #EC8484;
     --pokemon-color-blue: #94DBEE;
@@ -41,6 +42,11 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   html, body {
+    width: 100%;
+    height: 100%;
+  }
+
+  #root {
     width: 100%;
     height: 100%;
   }

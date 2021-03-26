@@ -1,9 +1,9 @@
 import React from 'react';
 
-// import { Container } from './styles';
+import * as S from './styles';
 
 const Home: React.FC = () => {
-  return <div>Home</div>;
+  return <S.Container>Home</S.Container>;
 };
 
 export default Home;
