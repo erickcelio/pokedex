@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import { ReactComponent as Logo } from 'assets/logo.svg';
 
@@ -12,7 +12,9 @@ const MainLayout: React.FC = ({ children }) => {
   return (
     <S.Container>
       <S.LogoContainer notOnHomePage={notOnHomePage}>
-        <Logo />
+        <Link to="/">
+          <Logo />
+        </Link>
       </S.LogoContainer>
       <div>{children}</div>
     </S.Container>

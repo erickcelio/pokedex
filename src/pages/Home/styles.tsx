@@ -7,3 +7,9 @@ export const Container = styled.div`
   flex-direction: column;
   justify-content: center;
 `;
+
+export const SelectContainer = styled.div`
+  width: 50rem;
+  margin-bottom: 2.4rem;
+  color: var(--black);
+`;

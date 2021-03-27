@@ -38,6 +38,7 @@ export const GlobalStyle = createGlobalStyle`
 
   body, input, textarea, button {
     font-family: 'Roboto', sans-serif;
+    font-size: 1.6rem;
     font-weight: 400;
   }
 
