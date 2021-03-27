@@ -4,14 +4,17 @@ import Routes from 'routes';
 
 import MainLayout from 'layouts/Main';
 import { GlobalStyle } from 'styles/global';
+import { PokemonsProvider } from 'hooks/use-pokemons';
 
 const App = () => {
   return (
     <BrowserRouter>
-      <MainLayout>
-        <GlobalStyle />
-        <Routes />
-      </MainLayout>
+      <PokemonsProvider>
+        <MainLayout>
+          <GlobalStyle />
+          <Routes />
+        </MainLayout>
+      </PokemonsProvider>
     </BrowserRouter>
   );
 };

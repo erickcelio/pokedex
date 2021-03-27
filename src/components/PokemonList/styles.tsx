@@ -1,16 +1,20 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
+  width: 100%;
   border: 0.1rem solid var(--yellow);
   border-radius: 0.8rem;
-  display: flex;
-  padding: 1.6rem;
-  flex-wrap: wrap;
-  justify-content: space-between;
 
   a {
     text-decoration: none;
   }
+`;
+
+export const PokemonsContainer = styled.div`
+  display: flex;
+  padding: 1.6rem;
+  flex-wrap: wrap;
+  justify-content: space-between;
 `;
 
 type PokemonProps = {
@@ -29,6 +33,7 @@ export const Pokemon = styled.div<PokemonProps>`
   justify-content: center;
   box-shadow: 0 0 0.4rem rgba(0, 0, 0, 0.25);
   background-color: var(--pokemon-color-${({ color }) => color});
+  transition: all 0.3s linear;
 
   img {
     width: 12rem;
@@ -44,5 +49,9 @@ export const Pokemon = styled.div<PokemonProps>`
     color: var(--white);
     -webkit-text-stroke-width: 0.15rem;
     -webkit-text-stroke-color: var(--black);
+  }
+
+  &:hover {
+    transform: scale(1.1);
   }
 `;

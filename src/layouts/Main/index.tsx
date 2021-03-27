@@ -16,7 +16,7 @@ const MainLayout: React.FC = ({ children }) => {
           <Logo />
         </Link>
       </S.LogoContainer>
-      <div>{children}</div>
+      {children}
     </S.Container>
   );
 };

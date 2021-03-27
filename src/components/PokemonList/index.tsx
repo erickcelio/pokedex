@@ -1,26 +1,34 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Pokemon } from 'types/pokemon';
+import InfiniteScroll from 'react-infinite-scroll-component';
+
+import Loading from 'components/Loading';
+import { usePokemons } from 'hooks/use-pokemons';
 
 import * as S from './styles';
 
-type PokemonListProps = {
-  pokemons: Pokemon[];
-};
-
-const PokemonList: React.FC<PokemonListProps> = ({ pokemons }) => {
-  console.log({ pokemons });
+const PokemonList: React.FC = () => {
+  const { pokemons, findNextPokemons, hasNextPokemons } = usePokemons();
 
   return (
     <S.Container>
-      {pokemons.map(({ image, name, color, id }) => (
-        <Link to={`pokemon/${id}`} key={id}>
-          <S.Pokemon color={color}>
-            <img src={image} alt={`Pokemon ${name}`} />
-            <span>{name}</span>
-          </S.Pokemon>
-        </Link>
-      ))}
+      <InfiniteScroll
+        dataLength={pokemons.length}
+        next={findNextPokemons}
+        hasMore={hasNextPokemons}
+        loader={<Loading isLoading />}
+      >
+        <S.PokemonsContainer>
+          {pokemons.map(({ image, name, color, id }) => (
+            <Link to={`pokemon/${id}`} key={id}>
+              <S.Pokemon color={color}>
+                <img src={image} alt={`Pokemon ${name}`} />
+                <span>{name}</span>
+              </S.Pokemon>
+            </Link>
+          ))}
+        </S.PokemonsContainer>
+      </InfiniteScroll>
     </S.Container>
   );
 };

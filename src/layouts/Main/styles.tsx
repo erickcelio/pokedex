@@ -16,11 +16,11 @@ type LogoContainerProps = {
 };
 
 export const LogoContainer = styled.div<LogoContainerProps>`
-  width: 100vw;
   display: flex;
   justify-content: center;
   margin: 3.2rem 0;
-  transition: all 0.6s ease-in-out;
+  transition: all 0.3s ease-in-out;
+  will-change: width, height, margin, padding;
 
   ${({ notOnHomePage }) =>
     notOnHomePage &&
@@ -32,7 +32,5 @@ export const LogoContainer = styled.div<LogoContainerProps>`
         width: 18.6rem;
         height: 6.4rem;
       }
-
-      border-bottom: 0.1rem solid var(--gray);
     `};
 `;
