@@ -20,7 +20,7 @@ export const Container = styled.div`
     'stats attributes'
     'evolutions evolutions';
 
-  grid-template-columns: 50% 50%;
+  grid-template-columns: 1fr 1fr;
 `;
 
 const ContainerBase = styled.div`
