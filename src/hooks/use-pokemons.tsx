@@ -16,6 +16,7 @@ export type PokemonsContextData = {
   hasLoaded: boolean;
   hasNextPokemons: boolean;
   findNextPokemons: () => void;
+  getPokemonById: (id: number) => Promise<Pokemon | undefined>;
 };
 
 export const PokemonsContext = createContext<PokemonsContextData>({
@@ -24,6 +25,7 @@ export const PokemonsContext = createContext<PokemonsContextData>({
   hasLoaded: false,
   hasNextPokemons: false,
   findNextPokemons: () => {},
+  getPokemonById: async () => undefined,
 });
 
 export type PokemonsProviderProps = {};
@@ -67,6 +69,17 @@ const PokemonsProvider: React.FC<PokemonsProviderProps> = ({ children }) => {
     }
   }, [nextPokemonsUrl]);
 
+  const getPokemonById = useCallback(
+    async (id: number) => {
+      const findedPokemon = pokemons.find(
+        (pokemonItem) => pokemonItem.id === id,
+      );
+
+      return findedPokemon;
+    },
+    [pokemons],
+  );
+
   useEffect(() => {
     fetchPokemons();
   }, []);
@@ -79,6 +92,7 @@ const PokemonsProvider: React.FC<PokemonsProviderProps> = ({ children }) => {
         pokemons,
         hasNextPokemons,
         findNextPokemons,
+        getPokemonById,
       }}
     >
       {children}
