@@ -38,7 +38,7 @@ const PokemonPage: React.FC = () => {
               ))}
             </div>
           ) : (
-            <Loading isLoading />
+            <Loading />
           )}
         </div>
         <div>
@@ -50,7 +50,7 @@ const PokemonPage: React.FC = () => {
               ))}
             </div>
           ) : (
-            <Loading isLoading />
+            <Loading />
           )}
         </div>
       </S.DescriptionContainer>
@@ -99,7 +99,7 @@ const PokemonPage: React.FC = () => {
             ))}
           </ul>
         ) : (
-          <Loading isLoading />
+          <Loading />
         )}
       </S.EvolutionsContainer>
     </S.Container>

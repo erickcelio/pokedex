@@ -5,10 +5,10 @@ import { ReactComponent as Pokeboll } from 'assets/pokeball.svg';
 import * as S from './styles';
 
 type LoadingProps = {
-  isLoading: boolean;
+  isLoading?: boolean;
 };
 
-const Loading: React.FC<LoadingProps> = ({ isLoading }) => {
+const Loading: React.FC<LoadingProps> = ({ isLoading = true }) => {
   return isLoading ? (
     <S.Container>
       <Pokeboll />

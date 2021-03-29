@@ -12,11 +12,13 @@ const PokemonList: React.FC = () => {
 
   return (
     <S.Container>
+      {!pokemons.length && <Loading />}
+
       <InfiniteScroll
         dataLength={pokemons.length}
         next={findNextPokemons}
         hasMore={hasNextPokemons}
-        loader={<Loading isLoading />}
+        loader={<Loading />}
       >
         <S.PokemonsContainer>
           {pokemons.map(({ image, name, color, id }) => (
