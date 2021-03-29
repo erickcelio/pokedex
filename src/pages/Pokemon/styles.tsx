@@ -1,4 +1,5 @@
 import styled, { keyframes } from 'styled-components';
+import { media } from 'styles/media';
 
 const grow = (size: number) => keyframes`
   0% {
@@ -14,13 +15,23 @@ export const Container = styled.div`
   width: 100%;
   display: grid;
   grid-gap: 1.6rem;
+  grid-template-columns: 1fr 1fr;
   grid-template-areas:
     'title title'
     'image description'
     'stats attributes'
     'evolutions evolutions';
 
-  grid-template-columns: 1fr 1fr;
+  ${media.tablet} {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'title'
+      'image'
+      'description'
+      'stats'
+      'attributes'
+      'evolutions';
+  }
 `;
 
 const ContainerBase = styled.div`
@@ -78,14 +89,13 @@ export const DescriptionContainer = styled(ContainerBase)`
 
   div {
     div {
+      margin-left: -1.6rem;
+      flex-wrap: wrap;
       display: flex;
 
       div {
         margin-top: 1.6rem;
-
-        & + div {
-          margin-left: 1.6rem;
-        }
+        margin-left: 1.6rem;
       }
     }
 
@@ -109,7 +119,7 @@ export const StatsContainer = styled(ContainerBase)`
 export const StatBar = styled.div<{ value: number }>`
   width: 100%;
   height: 2rem;
-  max-width: 40rem;
+  max-width: 55%;
   border-radius: 2rem;
   border: 1px solid var(--black);
   margin-left: auto;
@@ -124,6 +134,18 @@ export const StatBar = styled.div<{ value: number }>`
     background-color: var(--yellow);
 
     animation: ${({ value }) => grow(value / 2)} 2s forwards;
+  }
+
+  ${media.desktop} {
+    max-width: 40%;
+  }
+
+  ${media.tablet} {
+    max-width: 60%;
+  }
+
+  ${media.phone} {
+    max-width: 40%;
   }
 `;
 
@@ -197,6 +219,30 @@ export const EvolutionsContainer = styled(ContainerBase)`
       &:last-child {
         svg {
           display: none;
+        }
+      }
+    }
+  }
+
+  ${media.desktop} {
+    ul {
+      li {
+        padding: 0 4rem;
+      }
+    }
+  }
+
+  ${media.tablet} {
+    ul {
+      flex-direction: column;
+
+      li {
+        padding: 4rem 0rem;
+
+        svg {
+          right: auto;
+          bottom: -2.4rem;
+          transform: rotate(90deg);
         }
       }
     }
