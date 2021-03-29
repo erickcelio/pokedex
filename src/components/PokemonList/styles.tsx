@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { media } from 'styles/media';
 
 export const Container = styled.div`
   width: 100%;
@@ -15,6 +16,18 @@ export const PokemonsContainer = styled.div`
   padding: 1.6rem;
   flex-wrap: wrap;
   justify-content: space-between;
+
+  ${media.tablet} {
+    justify-content: space-around;
+  }
+
+  ${media.phone} {
+    justify-content: center;
+
+    a {
+      width: 100%;
+    }
+  }
 `;
 
 type PokemonProps = {
@@ -53,5 +66,10 @@ export const Pokemon = styled.div<PokemonProps>`
 
   &:hover {
     transform: scale(1.1);
+  }
+
+  ${media.phone} {
+    width: 100%;
+    margin: 1.6rem 0;
   }
 `;
