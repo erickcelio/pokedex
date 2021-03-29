@@ -5,15 +5,18 @@ import Routes from 'routes';
 import MainLayout from 'layouts/Main';
 import { GlobalStyle } from 'styles/global';
 import { PokemonsProvider } from 'hooks/use-pokemons';
+import { PokemonProvider } from 'hooks/use-pokemon';
 
 const App = () => {
   return (
     <BrowserRouter>
       <PokemonsProvider>
-        <MainLayout>
-          <GlobalStyle />
-          <Routes />
-        </MainLayout>
+        <PokemonProvider>
+          <MainLayout>
+            <GlobalStyle />
+            <Routes />
+          </MainLayout>
+        </PokemonProvider>
       </PokemonsProvider>
     </BrowserRouter>
   );

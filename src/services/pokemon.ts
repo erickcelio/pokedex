@@ -120,8 +120,7 @@ const getPokemonsInfoFromList = async (pokemonList: PokemonListResult) => {
           evolutionChainUrl: evolution_chain.url,
           image: sprites.other.dream_world.front_default,
         };
-      } catch (e) {
-        console.log({ e });
+      } catch {
         return null;
       }
     }),

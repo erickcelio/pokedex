@@ -39,3 +39,9 @@ export type PokemonTypes =
   | 'dragon'
   | 'dark'
   | 'fairy';
+
+export type PokemonChain = {
+  id: number;
+  name: string;
+  image: string;
+};

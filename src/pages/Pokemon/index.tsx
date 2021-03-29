@@ -1,88 +1,25 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 import { ReactComponent as ForwardIcon } from 'assets/icons/forward.svg';
-import { Pokemon, PokemonTypes } from 'types/pokemon';
-import { usePokemons } from 'hooks/use-pokemons';
+import { usePokemon } from 'hooks/use-pokemon';
 import { normalizeText } from 'utils/text';
 import PokemonType from 'components/PokemonType';
 import Loading from 'components/Loading';
-import {
-  getPokemonEvolutionChain,
-  getPokemonWeaknessesAndFormatTypes,
-} from 'services/pokemon';
 
 import * as S from './styles';
 
-type PokemonTypesAndWeaknesses = {
-  types: PokemonTypes[];
-  weaknesses: PokemonTypes[];
-};
-
-type PokemonChain = {
-  id: number;
-  name: string;
-  image: string;
+type Params = {
+  pokemonId: string;
 };
 
 const PokemonPage: React.FC = () => {
-  const [pokemon, setPokemon] = useState<Pokemon | null>(null);
-  const [pokemonChain, setPokemonChain] = useState<PokemonChain[] | null>(null);
-  const [
-    pokemonTypesAndWeaknesses,
-    setPokemonTypesAndWeaknesses,
-  ] = useState<PokemonTypesAndWeaknesses | null>(null);
-
-  const { getPokemonById } = usePokemons();
-
-  const { pokemonId } = useParams<{
-    pokemonId: string;
-  }>();
-
-  const getTypeAndWeaknesses = useCallback(async () => {
-    if (pokemon) {
-      const { types, weaknesses } = await getPokemonWeaknessesAndFormatTypes({
-        types: pokemon.types,
-      });
-
-      if (types && weaknesses) {
-        setPokemonTypesAndWeaknesses({
-          types,
-          weaknesses,
-        });
-      }
-    }
-  }, [pokemon]);
-
-  const getPokemon = useCallback(async () => {
-    setPokemon(null);
-
-    const fetchedPokemon = await getPokemonById(parseInt(pokemonId, 10));
-
-    if (fetchedPokemon) {
-      setPokemon(fetchedPokemon);
-    }
-  }, [getPokemonById, pokemonId]);
-
-  const getPokemonChain = useCallback(async () => {
-    if (pokemon) {
-      const chain = await getPokemonEvolutionChain(pokemon.evolutionChainUrl);
-
-      setPokemonChain(chain);
-    }
-  }, [pokemon]);
+  const { pokemonId } = useParams<Params>();
+  const { pokemon, types, weaknesses, chain, setPokemonId } = usePokemon();
 
   useEffect(() => {
-    getPokemon();
-  }, [getPokemon]);
-
-  useEffect(() => {
-    getTypeAndWeaknesses();
-  }, [getTypeAndWeaknesses]);
-
-  useEffect(() => {
-    getPokemonChain();
-  }, [getPokemonChain]);
+    setPokemonId(parseInt(pokemonId, 10));
+  }, [pokemonId]);
 
   return pokemon ? (
     <S.Container>
@@ -94,19 +31,27 @@ const PokemonPage: React.FC = () => {
         <h2>Description</h2>
         <div>
           <h3>Type</h3>
-          <div>
-            {pokemonTypesAndWeaknesses?.types.map((type) => (
-              <PokemonType key={type} type={type} />
-            ))}
-          </div>
+          {types.length ? (
+            <div>
+              {types.map((type) => (
+                <PokemonType key={type} type={type} />
+              ))}
+            </div>
+          ) : (
+            <Loading isLoading />
+          )}
         </div>
         <div>
           <h3>Weaknesses</h3>
-          <div>
-            {pokemonTypesAndWeaknesses?.weaknesses.map((type) => (
-              <PokemonType key={`weakness-${type}`} type={type} />
-            ))}
-          </div>
+          {types.length ? (
+            <div>
+              {weaknesses.map((type) => (
+                <PokemonType key={`weakness-${type}`} type={type} />
+              ))}
+            </div>
+          ) : (
+            <Loading isLoading />
+          )}
         </div>
       </S.DescriptionContainer>
       <S.StatsContainer>
@@ -141,9 +86,9 @@ const PokemonPage: React.FC = () => {
       </S.AttributesContainer>
       <S.EvolutionsContainer>
         <h2>Evolutions</h2>
-        {pokemonChain ? (
+        {chain.length ? (
           <ul>
-            {pokemonChain.map(({ id, image, name }) => (
+            {chain.map(({ id, image, name }) => (
               <li key={`evolution-${name}`}>
                 <Link to={`/pokemon/${id}`}>
                   <img src={image} alt={`evolution-${name}`} />
