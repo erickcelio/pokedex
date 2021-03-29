@@ -7,9 +7,11 @@ import React, {
   useEffect,
   useState,
 } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import {
   getPokemonEvolutionChain,
+  getPokemonInfo,
   getPokemonWeaknessesAndFormatTypes,
 } from 'services/pokemon';
 import { Pokemon, PokemonChain, PokemonTypes } from 'types/pokemon';
@@ -45,16 +47,27 @@ const PokemonProvider: React.FC<PokemonProviderProps> = ({ children }) => {
   const [chain, setChain] = useState<PokemonChain[]>([]);
 
   const { getPokemonById } = usePokemons();
+  const history = useHistory();
 
   const fetchPokemonInfo = useCallback(
     async (id: number) => {
-      const fetchedPokemon = await getPokemonById(id);
+      const findedPokemon = await getPokemonById(id);
 
-      if (fetchedPokemon) {
-        setPokemon(fetchedPokemon);
+      if (findedPokemon) {
+        setPokemon(findedPokemon);
+      } else {
+        const fetchedPokemon = await getPokemonInfo({
+          idOrName: id,
+        });
+
+        if (fetchedPokemon) {
+          setPokemon(fetchedPokemon);
+        } else {
+          history.push('/');
+        }
       }
     },
-    [getPokemonById],
+    [getPokemonById, history],
   );
 
   const fetchPokemonChain = useCallback(async (pokemonChainUrl: string) => {

@@ -73,57 +73,81 @@ type PokemonSpeciesResult = {
   };
 };
 
-const getPokemonsInfoFromList = async (pokemonList: PokemonListResult) => {
-  const pokemonsInfo = await Promise.all(
-    pokemonList.results.map(async (pokemon) => {
-      try {
-        const {
-          data: {
-            id,
-            name,
-            sprites,
-            stats,
-            species,
-            types,
-            weight,
-            height,
-            abilities,
-          },
-        } = await axios.get<PokemonInfoResult>(pokemon.url);
+type getPokemonInfoParams = {
+  url?: string;
+  idOrName?: number | string;
+};
 
-        const {
-          data: { color, evolution_chain },
-        } = await axios.get<PokemonSpeciesResult>(species.url);
+export const getPokemonInfo = async ({
+  url,
+  idOrName,
+}: getPokemonInfoParams) => {
+  try {
+    let pokemonInfo;
 
-        const formattedStats = stats.map(({ stat, base_stat }) => ({
-          name: stat.name,
-          value: base_stat,
-        }));
+    if (url) {
+      pokemonInfo = await axios.get<PokemonInfoResult>(url);
+    }
 
-        const filteredAbilities = abilities.filter(
-          ({ is_hidden }) => !is_hidden,
-        );
+    if (idOrName) {
+      pokemonInfo = await pokemonApi.get<PokemonInfoResult>(
+        `pokemon/${idOrName}`,
+      );
+    }
 
-        const formattedAbilities = filteredAbilities.map(
-          ({ ability }) => ability.name,
-        );
-
-        return {
+    if (pokemonInfo) {
+      const {
+        data: {
           id,
           name,
+          sprites,
+          stats,
+          species,
           types,
           weight,
           height,
-          color: color.name,
-          stats: formattedStats,
-          abilities: formattedAbilities,
-          evolutionChainUrl: evolution_chain.url,
-          image: sprites.other.dream_world.front_default,
-        };
-      } catch {
-        return null;
-      }
-    }),
+          abilities,
+        },
+      } = pokemonInfo;
+
+      const {
+        data: { color, evolution_chain },
+      } = await axios.get<PokemonSpeciesResult>(species.url);
+
+      const formattedStats = stats.map(({ stat, base_stat }) => ({
+        name: stat.name,
+        value: base_stat,
+      }));
+
+      const filteredAbilities = abilities.filter(({ is_hidden }) => !is_hidden);
+
+      const formattedAbilities = filteredAbilities.map(
+        ({ ability }) => ability.name,
+      );
+
+      return {
+        id,
+        name,
+        types,
+        weight,
+        height,
+        color: color.name,
+        stats: formattedStats,
+        abilities: formattedAbilities,
+        evolutionChainUrl: evolution_chain.url,
+        image: sprites.other.dream_world.front_default,
+      };
+    }
+
+    return null;
+  } catch {
+    return null;
+  }
+};
+
+const getPokemonsInfoFromList = async (pokemonList: PokemonListResult) => {
+  const pokemonsInfo = await Promise.all(
+    pokemonList.results.map(getPokemonInfo),
   );
 
   return pokemonsInfo.filter((item) => item !== null) as Pokemon[];

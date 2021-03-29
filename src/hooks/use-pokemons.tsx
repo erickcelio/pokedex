@@ -2,7 +2,6 @@ import React, {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
   useState,
 } from 'react';
@@ -16,6 +15,7 @@ export type PokemonsContextData = {
   hasLoaded: boolean;
   hasNextPokemons: boolean;
   findNextPokemons: () => void;
+  fetchPokemons: () => void;
   getPokemonById: (id: number) => Promise<Pokemon | undefined>;
 };
 
@@ -25,6 +25,7 @@ export const PokemonsContext = createContext<PokemonsContextData>({
   hasLoaded: false,
   hasNextPokemons: false,
   findNextPokemons: () => {},
+  fetchPokemons: () => {},
   getPokemonById: async () => undefined,
 });
 
@@ -70,19 +71,9 @@ const PokemonsProvider: React.FC<PokemonsProviderProps> = ({ children }) => {
   }, [nextPokemonsUrl]);
 
   const getPokemonById = useCallback(
-    async (id: number) => {
-      const findedPokemon = pokemons.find(
-        (pokemonItem) => pokemonItem.id === id,
-      );
-
-      return findedPokemon;
-    },
+    async (id: number) => pokemons.find((pokemonItem) => pokemonItem.id === id),
     [pokemons],
   );
-
-  useEffect(() => {
-    fetchPokemons();
-  }, []);
 
   return (
     <PokemonsContext.Provider
@@ -93,6 +84,7 @@ const PokemonsProvider: React.FC<PokemonsProviderProps> = ({ children }) => {
         hasNextPokemons,
         findNextPokemons,
         getPokemonById,
+        fetchPokemons,
       }}
     >
       {children}
