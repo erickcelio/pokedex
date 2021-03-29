@@ -1,14 +1,16 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import Home from 'pages/Home';
-import Pokemon from 'pages/Pokemon';
+import HomePage from 'pages/Home';
+import PokemonPage from 'pages/Pokemon';
+import NotFoundPage from 'pages/NotFound';
 
 const Routes: React.FC = () => {
   return (
     <Switch>
-      <Route path="/" exact component={Home} />
-      <Route path="/pokemon/:pokemonId" component={Pokemon} />
+      <Route path="/" exact component={HomePage} />
+      <Route path="/pokemon/:pokemonId" component={PokemonPage} />
+      <Route component={NotFoundPage} />
     </Switch>
   );
 };

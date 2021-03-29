@@ -5,7 +5,7 @@ import { usePokemons } from 'hooks/use-pokemons';
 
 import * as S from './styles';
 
-const Home: React.FC = () => {
+const HomePage: React.FC = () => {
   const { fetchPokemons } = usePokemons();
 
   useEffect(() => {
@@ -19,4 +19,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home;
+export default HomePage;
